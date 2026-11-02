@@ -1,4 +1,3 @@
-// 確保兩個檔案共用同一個全域記憶體
 global.sharedPoints = global.sharedPoints || 2500;
 
 export default function handler(req, res) {
