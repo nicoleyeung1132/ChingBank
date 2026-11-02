@@ -17,7 +17,7 @@
         .card-container {
             background: linear-gradient(135deg, #1e3a8a 0%, #2A4B83 100%);
             width: 100%;
-            max-width: 400px;
+            max-width: 400px; /* 維持原本的大小 */
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             color: white;
@@ -61,7 +61,7 @@
             font-weight: bold;
             color: #ffffff;
         }
-        /* 重新整理按鈕移至點數下方 */
+        /* 重新整理按鈕保持在點數下方 */
         .refresh-hint {
             font-size: 0.7rem;
             color: #93c5fd;
@@ -74,10 +74,12 @@
             color: #ffffff;
             text-decoration: underline;
         }
+        /* 單獨將卡片圖放大（這裡設定寬度放大至 112%，並透過負邊距修正置中與間距） */
         .credit-card-art {
-            width: 100%;
+            width: 112%;
+            margin-left: -6%; /* 讓放大後的圖片左右切齊容器 */
             border-radius: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             display: block;
         }
         .info-row {
@@ -96,7 +98,7 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-        /* QR Code 區塊改為置中且白色背景剛好包覆 */
+        /* QR Code 區塊維持原本大小與置中白底 */
         .qr-container {
             text-align: center;
         }
@@ -142,7 +144,7 @@
             </div>
         </div>
 
-        <!-- 魔法小卡卡面圖片 -->
+        <!-- 魔法小卡卡面圖片 (已單獨放大) -->
         <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
 
         <!-- 使用期限與銀行代碼 -->
