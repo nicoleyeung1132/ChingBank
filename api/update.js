@@ -1,4 +1,5 @@
-import passData from './pass.js';
+import fs from 'fs';
+import path from 'path';
 
 export default function handler(req, res) {
   if (req.method === 'POST') {
@@ -9,23 +10,41 @@ export default function handler(req, res) {
       return res.status(400).json({ error: '請輸入有效的數字' });
     }
 
-    // 確保 points 存在且為數字
-    if (typeof passData.points !== 'number') {
-      passData.points = 0;
+    try {
+      const filePath = path.join(process.cwd(), 'api', 'data.json');
+      
+      // 讀取現有點數
+      let currentPoints = 2500;
+      if (fs.existsSync(filePath)) {
+        const fileData = fs.readFileSync(filePath, 'utf8');
+        const data = JSON.parse(fileData);
+        currentPoints = data.points ?? 2500;
+      }
+
+      // 根據動作加扣點
+      if (action === 'add') {
+        currentPoints += value;
+      } else if (action === 'deduct') {
+        currentPoints -= value;
+      } else {
+        return res.status(400).json({ error: '無效的操作動作' });
+      }
+
+      // 將新點數寫回檔案
+      fs.writeFileSync(filePath, JSON.stringify({ points: currentPoints }, null, 2));
+
+      // 回傳給手機捷徑
+      return res.status(200).json({
+        success: true,
+        message: `成功${action === 'add' ? '增加' : '扣除'} ${value} 點`,
+        currentPoints: currentPoints,
+        points: currentPoints
+      });
+
+    } catch (err) {
+      return res.status(500).json({ error: '伺服器寫入資料失敗' });
     }
 
-    if (action === 'add') {
-      passData.points += value;
-    } else if (action === 'deduct') {
-      passData.points -= value;
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: `成功${action === 'add' ? '增加' : '扣除'} ${value} 點`,
-      currentPoints: passData.points,
-      points: passData.points // 雙重保險，同時提供 points 與 currentPoints
-    });
   } else {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ message: 'Method Not Allowed' });
