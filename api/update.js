@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { action, amount } = req.body;
+    const { action, amount } = req.body || {};
     const value = parseInt(amount, 10) || 0;
     const npointUrl = 'https://api.npoint.io/feb752e494d7b4d889ea';
 
@@ -15,6 +15,8 @@ export default async function handler(req, res) {
         currentPoints += value;
       } else if (action === 'deduct') {
         currentPoints -= value;
+      } else {
+        currentPoints += value; // 預設防呆
       }
 
       // 3. 將計算後的最新點數寫回 npoint.io
