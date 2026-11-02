@@ -61,6 +61,19 @@
             font-weight: bold;
             color: #ffffff;
         }
+        /* 重新整理按鈕移至點數下方 */
+        .refresh-hint {
+            font-size: 0.7rem;
+            color: #93c5fd;
+            cursor: pointer;
+            margin-top: 4px;
+            text-align: right;
+            transition: color 0.2s;
+        }
+        .refresh-hint:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
         .credit-card-art {
             width: 100%;
             border-radius: 12px;
@@ -84,33 +97,29 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
+        /* QR Code 區塊改為置中且白色背景剛好包覆 */
+        .qr-container {
+            text-align: center;
+        }
         .qr-section {
+            display: inline-block;
             background: white;
             border-radius: 16px;
             padding: 16px;
             text-align: center;
             color: #333;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
         .qr-image {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             margin: 0 auto 8px auto;
             display: block;
         }
         .qr-date {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #555;
             font-weight: 500;
-        }
-        .refresh-hint {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.75rem;
-            color: #93c5fd;
-            cursor: pointer;
-        }
-        .refresh-hint:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -120,7 +129,7 @@
         <!-- 頂部標題與即時點數 -->
         <div class="header">
             <div class="header-left">
-                <!-- 頭貼圖片，若有上傳檔可對應檔名 -->
+                <!-- 頭貼圖片 -->
                 <img src="去背標籤圖.png" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/45'">
                 <div class="title-group">
                     <h1>大人專屬魔法小卡</h1>
@@ -129,6 +138,8 @@
             <div class="points-box">
                 <div class="points-label">剩餘點數</div>
                 <div id="points" class="points-value">載入中...</div>
+                <!-- 重新整理按鈕放置於點數下方 -->
+                <div class="refresh-hint" onclick="fetchPoints()">🔄 重新整理點數</div>
             </div>
         </div>
 
@@ -147,14 +158,13 @@
             </div>
         </div>
 
-        <!-- QR Code 區塊 -->
-        <div class="qr-section">
-            <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-image" onerror="this.src='https://via.placeholder.com/180?text=QR+Code'">
-            <div class="qr-date">20261031</div>
+        <!-- QR Code 區塊 (白底剛好包覆) -->
+        <div class="qr-container">
+            <div class="qr-section">
+                <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-image" onerror="this.src='https://via.placeholder.com/160?text=QR+Code'">
+                <div class="qr-date">20261031</div>
+            </div>
         </div>
-
-        <!-- 點擊文字可以隨時重新整理抓取最新點數 -->
-        <div class="refresh-hint" onclick="fetchPoints()">🔄 點此重新整理點數</div>
     </div>
 
     <script>
