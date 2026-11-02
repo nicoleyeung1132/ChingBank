@@ -181,8 +181,8 @@
         const res = await fetch('/api/balance');
         const data = await res.json();
         
-        // 假設後端回傳格式為 { points: 2500 } 或 { balance: 2500 }
-        const points = data.points ?? data.balance ?? data;
+        // 抓取後端回傳的 currentPoints 屬性
+        const points = data.currentPoints ?? data.points ?? data.balance ?? data;
         
         if (typeof points === 'number') {
           // 將數字格式化為帶有千分位的字串 (例如 2,500)
