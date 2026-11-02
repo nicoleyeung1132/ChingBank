@@ -1,12 +1,11 @@
-global.sharedPoints = global.sharedPoints || 2500;
+export default async function handler(req, res) {
+  try {
+    // 讀取你剛剛在 npoint.io 建立的網址
+    const response = await fetch('https://api.npoint.io/feb752e494d7b4d889ea');
+    const data = await response.json();
 
-export default function handler(req, res) {
-  if (req.method === 'GET') {
-    return res.status(200).json({
-      currentPoints: global.sharedPoints
-    });
-  } else {
-    res.setHeader('Allow', ['GET']);
-    return res.status(405).json({ message: 'Method Not Allowed' });
+    return res.status(200).json({ currentPoints: data.points });
+  } catch (error) {
+    return res.status(500).json({ error: '讀取失敗' });
   }
 }
