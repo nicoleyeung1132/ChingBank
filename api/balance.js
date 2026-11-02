@@ -1,4 +1,14 @@
+import fs from 'fs';
+import path from 'path';
+
 export default function handler(req, res) {
-  // 這裡可以先設定一個測試點數 2500，之後可串接你的資料庫或檔案
-  res.status(200).json({ points: 2500 });
+  try {
+    const filePath = path.join(process.cwd(), 'api', 'data.json');
+    const fileData = fs.readFileSync(filePath, 'utf8');
+    const data = JSON.parse(fileData);
+
+    res.status(200).json({ points: data.points ?? 2500 });
+  } catch (err) {
+    res.status(200).json({ points: 2500 });
+  }
 }
