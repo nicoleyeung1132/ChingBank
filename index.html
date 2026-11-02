@@ -1,142 +1,101 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>大人專屬魔法小卡</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-      background-color: #f2f2f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 16px;
-    }
-    .wallet-card {
-      width: 100%;
-      max-width: 380px;
-      background: linear-gradient(180deg, #2b5288 0%, #1c3b68 100%);
-      border-radius: 20px;
-      padding: 24px 20px 28px 20px;
-      color: #ffffff;
-      box-shadow: 0 12px 30px rgba(28, 59, 104, 0.35);
-      position: relative;
-    }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .header-left { display: flex; align-items: center; gap: 10px; }
-    .avatar-icon { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background-color: #ffffff; }
-    .card-title { font-size: 1.35rem; font-weight: 700; letter-spacing: 0.5px; }
-    .header-right { text-align: right; }
-    .label { font-size: 0.75rem; color: rgba(255, 255, 255, 0.75); margin-bottom: 2px; font-weight: 500; }
-    .balance-val { font-size: 1.4rem; font-weight: 700; cursor: pointer; }
-    
-    /* 新增：重新整理按鈕樣式 */
-    .refresh-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      margin-top: 4px;
-      cursor: pointer;
-    }
-    .refresh-btn:active { background: rgba(255, 255, 255, 0.4); }
-
-    .card-banner { width: 100%; margin: 12px 0 20px 0; border-radius: 12px; overflow: hidden; display: flex; justify-content: center; }
-    .banner-img { width: 100%; height: auto; border-radius: 12px; display: block; }
-    .card-info { display: flex; justify-content: space-between; margin-bottom: 24px; padding: 0 4px; }
-    .info-group { display: flex; flex-direction: column; }
-    .info-group.right { text-align: right; }
-    .info-val { font-size: 1.55rem; font-weight: 600; margin-top: 2px; letter-spacing: 0.5px; }
-    .qr-container {
-      background-color: #ffffff;
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      width: fit-content;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .qr-img { width: 180px; height: 180px; object-fit: contain; }
-    .qr-subtext { color: #333333; font-size: 0.9rem; font-weight: 600; margin-top: 10px; letter-spacing: 1px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChingBank 點數儀表板</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+            width: 320px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .points-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 20px 0;
+        }
+        .refresh-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .refresh-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .loading {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="wallet-card">
-    <div class="card-header">
-      <div class="header-left">
-        <img src="去背標籤圖.png" alt="Icon" class="avatar-icon" onerror="this.style.display='none'">
-        <div class="card-title">大人專屬魔法小卡</div>
-      </div>
-      <div class="header-right">
-        <div class="label">剩餘點數</div>
-        <div class="balance-val" id="balance-display">載入中...</div>
-        <button class="refresh-btn" onclick="fetchBalance()">🔄 重新整理</button>
-      </div>
+    <div class="card">
+        <h1>ChingBank 目前點數</h1>
+        <div id="points" class="points-display">載入中...</div>
+        <button class="refresh-btn" onclick="fetchPoints()">重新整理</button>
+        <div id="status" class="loading"></div>
     </div>
 
-    <div class="card-banner">
-      <img src="卡片正面_1.png" alt="ChingBank Card" class="banner-img">
-    </div>
+    <script>
+        // 你的 Google Apps Script Web App 網址
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyHvdcxDuUgI5TMR5pJp2uYmxkOmWCH0ftkgFY_trWiEj0jOMii2UphTuMjEd-GPhvK/exec';
 
-    <div class="card-info">
-      <div class="info-group">
-        <div class="label">使用期限</div>
-        <div class="info-val">2027/11/22</div>
-      </div>
-      <div class="info-group right">
-        <div class="label">銀行代碼</div>
-        <div class="info-val">Ching</div>
-      </div>
-    </div>
-
-    <div class="qr-container">
-      <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-img">
-      <div class="qr-subtext">20261031</div>
-    </div>
-  </div>
-
-  <script>
-    async function fetchBalance() {
-      const display = document.getElementById('balance-display');
-      display.textContent = "更新中...";
-      
-      try {
-        // 強制加上時間戳記向 npoint.io 要資料
-        const url = `https://script.google.com/macros/s/AKfycbyHvdcxDuUgI5TMR5pJp2uYmxkOmWCH0ftkgFY_trWiEj0jOMii2UphTuMjEd-GPhvK/exec?t=${Date.now()}`;
-        console.log("正在請求：", url);
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        console.log("npoint 回傳的最新資料：", data);
-        
-        if (data && typeof data.points !== 'undefined') {
-          display.textContent = Number(data.points).toLocaleString();
-        } else {
-          display.textContent = "格式錯誤";
+        async function fetchPoints() {
+            const pointsEl = document.getElementById('points');
+            const statusEl = document.getElementById('status');
+            
+            statusEl.innerText = "正在同步最新點數...";
+            
+            try {
+                // 加上時間戳記 ?t=... 避免瀏覽器快取舊資料
+                const response = await fetch(`${scriptUrl}?t=${Date.now()}`);
+                const data = await response.json();
+                
+                if (typeof data.points !== 'undefined') {
+                    pointsEl.innerText = data.points;
+                    statusEl.innerText = "同步成功！";
+                } else {
+                    pointsEl.innerText = "錯誤";
+                    statusEl.innerText = "資料格式不符";
+                }
+            } catch (error) {
+                console.error(error);
+                pointsEl.innerText = "連線失敗";
+                statusEl.innerText = "請檢查網路連線";
+            }
         }
-      } catch (error) {
-        console.error('讀取失敗:', error);
-        display.textContent = '讀取失敗';
-      }
-    }
 
-    // 頁面載入時自動執行
-    fetchBalance();
-  </script>
+        // 網頁一打開自動抓取一次
+        fetchPoints();
+    </script>
+
 </body>
 </html>
