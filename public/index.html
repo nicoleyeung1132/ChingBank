@@ -1,1 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>大人專屬魔法小卡</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      background-color: #f2f2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    
+    /* 卡片容器 */
+    .wallet-card {
+      width: 100%;
+      max-width: 380px;
+      background: linear-gradient(180deg, #2b5288 0%, #1c3b68 100%);
+      border-radius: 20px;
+      padding: 24px 20px 28px 20px;
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(28, 59, 104, 0.35);
+      position: relative;
+    }
 
+    /* 頂部列 */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .avatar-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #ffffff;
+    }
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .label {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 2px;
+      font-weight: 500;
+    }
+    .balance-val {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    /* 中央圖片區 */
+    .card-banner {
+      width: 100%;
+      margin: 12px 0 20px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+    .banner-img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* 資訊雙欄區 */
+    .card-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
+    .info-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .info-group.right {
+      text-align: right;
+    }
+    .info-val {
+      font-size: 1.55rem;
+      font-weight: 600;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* QR Code 區域 */
+    .qr-container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      width: fit-content;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .qr-img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+    }
+    .qr-subtext {
+      color: #333333;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wallet-card">
+    <!-- 頁尾 header -->
+    <div class="card-header">
+      <div class="header-left">
+        <!-- 可放置小圖示，若無可直接用圖片 -->
+        <img src="avatar.png" alt="Icon" class="avatar-icon" onerror="this.style.display='none'">
+        <div class="card-title">大人專屬魔法小卡</div>
+      </div>
+      <div class="header-right">
+        <div class="label">剩餘點數</div>
+        <div class="balance-val" id="balance-display">...</div>
+      </div>
+    </div>
+
+    <!-- 中央信用卡圖 -->
+    <div class="card-banner">
+      <img src="card-design.png" alt="ChingBank Card" class="banner-img">
+    </div>
+
+    <!-- 資訊欄位 -->
+    <div class="card-info">
+      <div class="info-group">
+        <div class="label">使用期限</div>
+        <div class="info-val">2027/11/22</div>
+      </div>
+      <div class="info-group right">
+        <div class="label">銀行代碼</div>
+        <div class="info-val">Ching</div>
+      </div>
+    </div>
+
+    <!-- QR Code 區 -->
+    <div class="qr-container">
+      <img src="qrcode.png" alt="QR Code" class="qr-img">
+      <div class="qr-subtext">20261031</div>
+    </div>
+  </div>
+
+  <script>
+    // 頁面載入時自動取得最新點數數據
+    async function fetchBalance() {
+      try {
+        const res = await fetch('/api/balance');
+        const data = await res.json();
+        
+        // 假設後端回傳格式為 { points: 2500 } 或 { balance: 2500 }
+        const points = data.points ?? data.balance ?? data;
+        
+        if (typeof points === 'number') {
+          // 將數字格式化為帶有千分位的字串 (例如 2,500)
+          document.getElementById('balance-display').innerText = points.toLocaleString();
+        } else {
+          document.getElementById('balance-display').innerText = points;
+        }
+      } catch (err) {
+        document.getElementById('balance-display').innerText = 'ERROR';
+      }
+    }
+
+    fetchBalance();
+  </script>
+</body>
+</html>
