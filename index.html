@@ -2,51 +2,60 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>大人專屬魔法小卡 - ChingBank</title>
     <style>
+        /* 鎖定全螢幕，禁止整個網頁上下滑動 */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #4E8EF3;
-            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding-bottom: 40px;
             box-sizing: border-box;
+            padding: 10px;
         }
         .card-container {
             background: linear-gradient(135deg, #1e3a8a 0%, #2A4B83 100%);
             width: 100%;
-            max-width: 400px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            max-width: 380px;
+            max-height: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             color: white;
-            padding: 20px;
+            padding: 14px 16px;
             box-sizing: border-box;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
         }
         .header-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .avatar {
-            width: 42px;
-            height: 42px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
         .title-group h1 {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             margin: 0;
             font-weight: 600;
         }
@@ -54,20 +63,19 @@
             text-align: right;
         }
         .points-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #93c5fd;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .points-value {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: bold;
             color: #ffffff;
         }
         .refresh-hint {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #93c5fd;
             cursor: pointer;
-            margin-top: 2px;
             text-align: right;
             transition: color 0.2s;
         }
@@ -76,49 +84,49 @@
             text-decoration: underline;
         }
         .credit-card-art {
-            width: 112%;
-            margin-left: -6%;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            width: 110%;
+            margin-left: -5%;
+            border-radius: 10px;
+            margin-bottom: 8px;
             display: block;
         }
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 14px;
-            padding: 0 4px;
+            margin-bottom: 8px;
+            padding: 0 2px;
         }
         .info-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #93c5fd;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .info-value {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
         .qr-container {
             text-align: center;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
         }
         .qr-section {
             display: inline-block;
             background: white;
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 8px;
             text-align: center;
             color: #333;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .qr-image {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 6px auto;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 4px auto;
             display: block;
         }
         .qr-date {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #555;
             font-weight: 500;
         }
@@ -127,32 +135,35 @@
             border: 1px solid rgba(255, 255, 255, 0.35);
             color: white;
             width: 100%;
-            padding: 11px;
-            border-radius: 12px;
-            font-size: 0.9rem;
+            padding: 9px;
+            border-radius: 10px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             text-align: center;
             transition: background 0.2s;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .nav-btn:hover {
             background: rgba(255, 255, 255, 0.28);
         }
 
-        /* 通用頁面切換 */
+        /* 子頁面樣式 */
         .sub-page {
             display: none;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
         .page-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             margin: 0;
         }
@@ -165,7 +176,7 @@
             background: #2563eb;
             color: white;
             border: none;
-            padding: 6px 10px;
+            padding: 5px 10px;
             border-radius: 8px;
             font-size: 0.75rem;
             cursor: pointer;
@@ -174,7 +185,7 @@
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 6px 10px;
+            padding: 5px 10px;
             border-radius: 8px;
             font-size: 0.75rem;
             cursor: pointer;
@@ -183,11 +194,11 @@
         .grid-gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            max-height: 380px;
+            gap: 8px;
+            flex-grow: 1;
             overflow-y: auto;
-            padding-right: 4px;
-            margin-bottom: 14px;
+            padding-right: 2px;
+            margin-bottom: 10px;
         }
         .tx-card, .coupon-card {
             background: white;
@@ -198,18 +209,19 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            max-height: 160px;
         }
         .delete-btn {
             position: absolute;
-            top: 6px;
-            right: 6px;
+            top: 4px;
+            right: 4px;
             background: rgba(0, 0, 0, 0.6);
             color: white;
             border: none;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             display: flex;
             justify-content: center;
@@ -221,40 +233,39 @@
 
         .card-img {
             width: 100%;
-            height: 100px;
+            height: 85px;
             object-fit: cover;
             background: #e2e8f0;
         }
         .card-info {
-            padding: 8px;
-            font-size: 0.75rem;
+            padding: 6px;
+            font-size: 0.7rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        .card-date { color: #666; font-size: 0.65rem; margin-bottom: 2px; }
-        .card-name { font-weight: bold; color: #1e3a8a; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-date { color: #666; font-size: 0.6rem; margin-bottom: 1px; }
+        .card-name { font-weight: bold; color: #1e3a8a; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-price { color: #e11d48; font-weight: bold; }
 
-        /* 兌換券專用按鈕 */
         .use-coupon-btn {
             background: #16a34a;
             color: white;
             border: none;
             width: 100%;
-            padding: 5px;
+            padding: 4px;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .coupon-used-tag {
             color: #9ca3af;
             font-weight: bold;
             text-align: center;
-            margin-top: 4px;
-            font-size: 0.75rem;
+            margin-top: 2px;
+            font-size: 0.7rem;
         }
 
         /* 彈跳視窗 */
@@ -270,22 +281,22 @@
         .modal-content {
             background: white;
             color: #333;
-            padding: 20px;
-            border-radius: 16px;
+            padding: 16px;
+            border-radius: 14px;
             width: 85%;
-            max-width: 320px;
+            max-width: 300px;
         }
-        .modal-content h3 { margin-top: 0; font-size: 1.1rem; }
+        .modal-content h3 { margin-top: 0; font-size: 1rem; }
         .modal-content input {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 7px;
+            margin-bottom: 8px;
             border: 1px solid #ccc;
             border-radius: 6px;
             box-sizing: border-box;
         }
-        .modal-btns { display: flex; justify-content: flex-end; gap: 8px; }
-        .modal-btns button { padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer; }
+        .modal-btns { display: flex; justify-content: flex-end; gap: 6px; }
+        .modal-btns button { padding: 5px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
         .btn-cancel { background: #cbd5e1; }
         .btn-submit { background: #2563eb; color: white; }
     </style>
@@ -294,73 +305,81 @@
 
     <div class="card-container">
         <!-- 頁面一：魔法小卡首頁 -->
-        <div id="main-page">
-            <div class="header">
-                <div class="header-left">
-                    <img src="去背標籤圖.png" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/45'">
-                    <div class="title-group">
-                        <h1>大人專屬魔法小卡</h1>
+        <div id="main-page" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+                <div class="header">
+                    <div class="header-left">
+                        <img src="去背標籤圖.png" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/40'">
+                        <div class="title-group">
+                            <h1>大人專屬魔法小卡</h1>
+                        </div>
+                    </div>
+                    <div class="points-box">
+                        <div class="points-label">剩餘點數</div>
+                        <div id="points" class="points-value">載入中...</div>
+                        <div class="refresh-hint" onclick="fetchPoints()">🔄 重新整理</div>
                     </div>
                 </div>
-                <div class="points-box">
-                    <div class="points-label">剩餘點數</div>
-                    <div id="points" class="points-value">載入中...</div>
-                    <div class="refresh-hint" onclick="fetchPoints()">🔄 重新整理點數</div>
+
+                <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
+
+                <div class="info-row">
+                    <div>
+                        <div class="info-label">使用期限</div>
+                        <div class="info-value">2027/11/22</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="info-label">銀行代碼</div>
+                        <div class="info-value">Ching</div>
+                    </div>
+                </div>
+
+                <div class="qr-container">
+                    <div class="qr-section">
+                        <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-image" onerror="this.src='https://via.placeholder.com/120?text=QR+Code'">
+                        <div class="qr-date">20261122TING</div>
+                    </div>
                 </div>
             </div>
 
-            <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
-
-            <div class="info-row">
-                <div>
-                    <div class="info-label">使用期限</div>
-                    <div class="info-value">2027/11/22</div>
-                </div>
-                <div style="text-align: right;">
-                    <div class="info-label">銀行代碼</div>
-                    <div class="info-value">Ching</div>
-                </div>
+            <div>
+                <button class="nav-btn" onclick="showHistoryPage()">📜 查看歷史交易紀錄</button>
+                <button class="nav-btn" onclick="showCouponsPage()">🎟️ 我的兌換券票卡</button>
             </div>
-
-            <div class="qr-container">
-                <div class="qr-section">
-                    <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-image" onerror="this.src='https://via.placeholder.com/160?text=QR+Code'">
-                    <div class="qr-date">20261122TING</div>
-                </div>
-            </div>
-
-            <button class="nav-btn" onclick="showHistoryPage()">📜 查看歷史交易紀錄</button>
-            <button class="nav-btn" onclick="showCouponsPage()">🎟️ 我的兌換券票卡</button>
         </div>
 
         <!-- 頁面二：歷史交易紀錄牆 -->
-        <div id="history-page" class="sub-page">
-            <div class="page-header">
-                <h2 class="page-title">📜 歷史紀錄</h2>
-                <div class="action-group">
-                    <button class="btn-refresh" onclick="fetchHistory()">🔄 重新整理</button>
-                    <button class="btn-sm" onclick="openModal()">+ 記一筆</button>
+        <div id="history-page" class="sub-page" style="display: none;">
+            <div>
+                <div class="page-header">
+                    <h2 class="page-title">📜 歷史紀錄</h2>
+                    <div class="action-group">
+                        <button class="btn-refresh" onclick="fetchHistory()">🔄 重新整理</button>
+                        <button class="btn-sm" onclick="openModal()">+ 記一筆</button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="gallery" class="grid-gallery">
-                <div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入記錄中...</div>
+                <div id="gallery" class="grid-gallery">
+                    <div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 30px;">載入記錄中...</div>
+                </div>
             </div>
 
             <button class="nav-btn" onclick="showMainPage()">🔙 返回魔法小卡</button>
         </div>
 
-        <!-- 頁面三：我的兌換券票卡 (新增) -->
-        <div id="coupons-page" class="sub-page">
-            <div class="page-header">
-                <h2 class="page-title">🎟️ 我的兌換券</h2>
-                <div class="action-group">
-                    <button class="btn-refresh" onclick="fetchCoupons()">🔄 重新整理</button>
+        <!-- 頁面三：我的兌換券票卡 -->
+        <div id="coupons-page" class="sub-page" style="display: none;">
+            <div>
+                <div class="page-header">
+                    <h2 class="page-title">🎟️ 我的兌換券</h2>
+                    <div class="action-group">
+                        <button class="btn-refresh" onclick="fetchCoupons()">🔄 重新整理</button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="coupon-gallery" class="grid-gallery">
-                <div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入兌換券中...</div>
+                <div id="coupon-gallery" class="grid-gallery">
+                    <div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 30px;">載入兌換券中...</div>
+                </div>
             </div>
 
             <button class="nav-btn" onclick="showMainPage()">🔙 返回魔法小卡</button>
@@ -371,13 +390,13 @@
     <div id="modal">
         <div class="modal-content">
             <h3>新增交易紀錄</h3>
-            <label style="font-size:0.8rem;">品項名稱：</label>
+            <label style="font-size:0.75rem;">品項名稱：</label>
             <input type="text" id="tx-title" placeholder="例如：星巴克咖啡">
             
-            <label style="font-size:0.8rem;">價格 / 點數：</label>
+            <label style="font-size:0.75rem;">價格 / 點數：</label>
             <input type="number" id="tx-price" placeholder="例如：150">
             
-            <label style="font-size:0.8rem;">照片 (拍照或上傳)：</label>
+            <label style="font-size:0.75rem;">照片 (拍照或上傳)：</label>
             <input type="file" id="tx-file" accept="image/*">
             
             <div class="modal-btns">
@@ -390,7 +409,6 @@
     <script>
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbyHvdcxDuUgI5TMR5pJp2uYmxkOmWCH0ftkgFY_trWiEj0jOMii2UphTuMjEd-GPhvK/exec';
 
-        // 頁面載入時檢查是否有 QR Code 掃描帶入的領券請求
         window.addEventListener('DOMContentLoaded', async () => {
             fetchPoints();
             const urlParams = new URLSearchParams(window.location.search);
@@ -407,7 +425,6 @@
                     const result = await response.json();
                     if (result.success) {
                         alert(`🎉 恭喜獲得【${title}】！已自動放入您的票卡中。`);
-                        // 清除網址參數並跳轉到兌換券頁面
                         window.history.replaceState({}, document.title, window.location.pathname);
                         showCouponsPage();
                         return;
@@ -436,24 +453,23 @@
             }
         }
 
-        // 頁面切換控制
         function showMainPage() {
             document.getElementById('history-page').style.display = 'none';
             document.getElementById('coupons-page').style.display = 'none';
-            document.getElementById('main-page').style.display = 'block';
+            document.getElementById('main-page').style.display = 'flex';
         }
 
         function showHistoryPage() {
             document.getElementById('main-page').style.display = 'none';
             document.getElementById('coupons-page').style.display = 'none';
-            document.getElementById('history-page').style.display = 'block';
+            document.getElementById('history-page').style.display = 'flex';
             fetchHistory();
         }
 
         function showCouponsPage() {
             document.getElementById('main-page').style.display = 'none';
             document.getElementById('history-page').style.display = 'none';
-            document.getElementById('coupons-page').style.display = 'block';
+            document.getElementById('coupons-page').style.display = 'flex';
             fetchCoupons();
         }
 
@@ -469,17 +485,16 @@
             return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
         }
 
-        // 取得歷史紀錄
         async function fetchHistory() {
             const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入記錄中...</div>';
+            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 30px;">載入記錄中...</div>';
             
             try {
                 const response = await fetch(`${scriptUrl}?action=history&t=${Date.now()}`);
                 const list = await response.json();
                 
                 if (list.length === 0) {
-                    gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">目前尚無交易紀錄</div>';
+                    gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 30px;">目前尚無交易紀錄</div>';
                     return;
                 }
                 
@@ -503,21 +518,20 @@
                 });
             } catch (error) {
                 console.error(error);
-                gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #f87171; padding: 40px;">載入失敗</div>';
+                gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #f87171; padding: 30px;">載入失敗</div>';
             }
         }
 
-        // 取得兌換券清單 (新增)
         async function fetchCoupons() {
             const gallery = document.getElementById('coupon-gallery');
-            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入兌換券中...</div>';
+            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 30px;">載入兌換券中...</div>';
             
             try {
                 const response = await fetch(`${scriptUrl}?action=coupons&t=${Date.now()}`);
                 const list = await response.json();
                 
                 if (list.length === 0) {
-                    gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">目前尚無兌換券，快去掃描賀卡 QR Code 吧！</div>';
+                    gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 30px;">目前尚無兌換券，快去掃描賀卡 QR Code 吧！</div>';
                     return;
                 }
                 
@@ -543,11 +557,10 @@
                 });
             } catch (error) {
                 console.error(error);
-                gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #f87171; padding: 40px;">載入失敗</div>';
+                gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #f87171; padding: 30px;">載入失敗</div>';
             }
         }
 
-        // 核消兌換券 (新增)
         async function useCoupon(id) {
             if (!confirm('確定要核消這張兌換券嗎？核消後將無法恢復。')) return;
 
