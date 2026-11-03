@@ -13,7 +13,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding-bottom: 40px; /* 預留底部空間避免被手機瀏覽器遮擋 */
+            padding-bottom: 40px;
             box-sizing: border-box;
         }
         .card-container {
@@ -82,7 +82,6 @@
             margin-bottom: 12px;
             display: block;
         }
-        /* 讓使用期限與銀行代碼緊跟在卡片下方 */
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -123,7 +122,6 @@
             color: #555;
             font-weight: 500;
         }
-        /* 底部切換按鈕樣式調整 */
         .nav-btn {
             background: rgba(255, 255, 255, 0.18);
             border: 1px solid rgba(255, 255, 255, 0.35);
@@ -141,7 +139,6 @@
             background: rgba(255, 255, 255, 0.28);
         }
 
-        /* 歷史紀錄頁面樣式 */
         #history-page {
             display: none;
         }
@@ -156,15 +153,35 @@
             font-weight: bold;
             margin: 0;
         }
+        .history-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
         .add-tx-btn {
             background: #2563eb;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
         }
+        /* 新增的重新整理記錄按鈕樣式 */
+        .refresh-tx-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .refresh-tx-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
         .grid-gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -182,9 +199,8 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
-            position: relative; /* 讓右上角刪除按鈕可以絕對定位 */
+            position: relative;
         }
-        /* 圖片右上角刪除按鈕樣式 */
         .delete-btn {
             position: absolute;
             top: 6px;
@@ -207,7 +223,6 @@
         .delete-btn:hover {
             background: rgba(225, 29, 72, 0.9);
         }
-
         .tx-img {
             width: 100%;
             height: 100px;
@@ -236,7 +251,6 @@
             font-weight: bold;
         }
 
-        /* 新增紀錄彈出表單 */
         #modal {
             display: none;
             position: fixed;
@@ -299,7 +313,6 @@
 
             <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
 
-            <!-- 移到卡片下方的使用期限與銀行代碼 -->
             <div class="info-row">
                 <div>
                     <div class="info-label">使用期限</div>
@@ -324,8 +337,11 @@
         <!-- 頁面二：歷史交易紀錄牆 -->
         <div id="history-page">
             <div class="history-header">
-                <h2 class="history-title">📜 歷史交易紀錄</h2>
-                <button class="add-tx-btn" onclick="openModal()">+ 記一筆</button>
+                <h2 class="history-title">📜 歷史紀錄</h2>
+                <div class="history-actions">
+                    <button class="refresh-tx-btn" onclick="fetchHistory()">🔄 重新整理記錄</button>
+                    <button class="add-tx-btn" onclick="openModal()">+ 記一筆</button>
+                </div>
             </div>
 
             <div id="gallery" class="grid-gallery">
@@ -401,7 +417,7 @@
 
         async function fetchHistory() {
             const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入紀錄中...</div>';
+            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入記錄中...</div>';
             
             try {
                 const response = await fetch(`${scriptUrl}?action=history&t=${Date.now()}`);
@@ -434,7 +450,6 @@
             }
         }
 
-        // 刪除歷史紀錄函式（同步刪除資料庫與前端介面）
         async function deleteTransaction(id, event) {
             event.stopPropagation();
             if (!confirm('確定要刪除這筆歷史紀錄嗎？')) return;
@@ -446,7 +461,7 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    fetchHistory(); // 重新整理圖庫
+                    fetchHistory();
                 } else {
                     alert('刪除失敗：' + result.message);
                 }
