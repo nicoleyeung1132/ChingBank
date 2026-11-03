@@ -182,7 +182,32 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            position: relative; /* 讓右上角刪除按鈕可以絕對定位 */
         }
+        /* 圖片右上角刪除按鈕樣式 */
+        .delete-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        .delete-btn:hover {
+            background: rgba(225, 29, 72, 0.9);
+        }
+
         .tx-img {
             width: 100%;
             height: 100px;
@@ -393,6 +418,7 @@
                     const card = document.createElement('div');
                     card.className = 'tx-card';
                     card.innerHTML = `
+                        <button class="delete-btn" onclick="deleteTransaction('${item.id}', event)" title="刪除">✕</button>
                         <img src="${item.image || 'https://via.placeholder.com/150?text=No+Image'}" class="tx-img" onerror="this.src='https://via.placeholder.com/150?text=Image+Error'">
                         <div class="tx-info">
                             <div class="tx-date">${formattedDate}</div>
@@ -405,6 +431,28 @@
             } catch (error) {
                 console.error(error);
                 gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #f87171; padding: 40px;">載入失敗</div>';
+            }
+        }
+
+        // 刪除歷史紀錄函式（同步刪除資料庫與前端介面）
+        async function deleteTransaction(id, event) {
+            event.stopPropagation();
+            if (!confirm('確定要刪除這筆歷史紀錄嗎？')) return;
+
+            try {
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'delete_history', id: id })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    fetchHistory(); // 重新整理圖庫
+                } else {
+                    alert('刪除失敗：' + result.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('連線錯誤，刪除失敗');
             }
         }
 
