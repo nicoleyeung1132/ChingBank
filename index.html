@@ -13,6 +13,8 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding-bottom: 40px; /* 預留底部空間避免被手機瀏覽器遮擋 */
+            box-sizing: border-box;
         }
         .card-container {
             background: linear-gradient(135deg, #1e3a8a 0%, #2A4B83 100%);
@@ -21,7 +23,7 @@
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             color: white;
-            padding: 24px;
+            padding: 20px;
             box-sizing: border-box;
             position: relative;
         }
@@ -29,7 +31,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
         .header-left {
             display: flex;
@@ -37,14 +39,14 @@
             gap: 10px;
         }
         .avatar {
-            width: 45px;
-            height: 45px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
         .title-group h1 {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             margin: 0;
             font-weight: 600;
         }
@@ -52,20 +54,20 @@
             text-align: right;
         }
         .points-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #93c5fd;
             margin-bottom: 2px;
         }
         .points-value {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #ffffff;
         }
         .refresh-hint {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #93c5fd;
             cursor: pointer;
-            margin-top: 4px;
+            margin-top: 2px;
             text-align: right;
             transition: color 0.2s;
         }
@@ -77,66 +79,69 @@
             width: 112%;
             margin-left: -6%;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             display: block;
         }
+        /* 讓使用期限與銀行代碼緊跟在卡片下方 */
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             padding: 0 4px;
         }
         .info-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #93c5fd;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .info-value {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
         .qr-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
         .qr-section {
             display: inline-block;
             background: white;
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 12px;
             text-align: center;
             color: #333;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
         }
         .qr-image {
-            width: 160px;
-            height: 160px;
-            margin: 0 auto 8px auto;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 6px auto;
             display: block;
         }
         .qr-date {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #555;
             font-weight: 500;
         }
+        /* 底部切換按鈕樣式調整 */
         .nav-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             color: white;
             width: 100%;
-            padding: 12px;
-            border-radius: 14px;
-            font-size: 0.95rem;
+            padding: 11px;
+            border-radius: 12px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             text-align: center;
             transition: background 0.2s;
         }
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.28);
         }
 
+        /* 歷史紀錄頁面樣式 */
         #history-page {
             display: none;
         }
@@ -144,10 +149,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .history-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             margin: 0;
         }
@@ -157,20 +162,21 @@
             border: none;
             padding: 6px 12px;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
         }
         .grid-gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-height: 420px;
+            gap: 10px;
+            max-height: 380px;
             overflow-y: auto;
             padding-right: 4px;
+            margin-bottom: 14px;
         }
         .tx-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             color: #333;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -179,17 +185,17 @@
         }
         .tx-img {
             width: 100%;
-            height: 110px;
+            height: 100px;
             object-fit: cover;
             background: #e2e8f0;
         }
         .tx-info {
             padding: 8px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         .tx-date {
             color: #666;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             margin-bottom: 2px;
         }
         .tx-name {
@@ -205,6 +211,7 @@
             font-weight: bold;
         }
 
+        /* 新增紀錄彈出表單 */
         #modal {
             display: none;
             position: fixed;
@@ -267,6 +274,7 @@
 
             <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
 
+            <!-- 移到卡片下方的使用期限與銀行代碼 -->
             <div class="info-row">
                 <div>
                     <div class="info-label">使用期限</div>
@@ -299,9 +307,7 @@
                 <div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入紀錄中...</div>
             </div>
 
-            <div style="margin-top: 16px;">
-                <button class="nav-btn" onclick="showMainPage()">🔙 返回魔法小卡</button>
-            </div>
+            <button class="nav-btn" onclick="showMainPage()">🔙 返回魔法小卡</button>
         </div>
     </div>
 
@@ -328,7 +334,6 @@
     <script>
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbyHvdcxDuUgI5TMR5pJp2uYmxkOmWCH0ftkgFY_trWiEj0jOMii2UphTuMjEd-GPhvK/exec';
 
-        // 取得點數
         async function fetchPoints() {
             const pointsEl = document.getElementById('points');
             pointsEl.innerText = "載入中...";
@@ -346,7 +351,6 @@
             }
         }
 
-        // 切換頁面
         function showHistoryPage() {
             document.getElementById('main-page').style.display = 'none';
             document.getElementById('history-page').style.display = 'block';
@@ -358,13 +362,10 @@
             document.getElementById('main-page').style.display = 'block';
         }
 
-        // 格式化時間工具函式 (將 ISO 或一般時間轉為 YYYY-MM-DD HH:mm)
         function formatTimestamp(isoString) {
             if (!isoString) return '';
             const date = new Date(isoString);
-            if (isNaN(date.getTime())) {
-                return isoString; // 如果原本就不是日期格式則直接回傳
-            }
+            if (isNaN(date.getTime())) return isoString;
             const yyyy = date.getFullYear();
             const mm = String(date.getMonth() + 1).padStart(2, '0');
             const dd = String(date.getDate()).padStart(2, '0');
@@ -373,7 +374,6 @@
             return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
         }
 
-        // 取得歷史紀錄
         async function fetchHistory() {
             const gallery = document.getElementById('gallery');
             gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入紀錄中...</div>';
@@ -408,11 +408,9 @@
             }
         }
 
-        // 彈跳視窗控制
         function openModal() { document.getElementById('modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
-        // 送出新交易紀錄
         async function submitTransaction() {
             const title = document.getElementById('tx-title').value;
             const price = document.getElementById('tx-price').value;
@@ -434,7 +432,7 @@
                 title: title,
                 price: price,
                 image: imageUrl,
-                timestamp: new Date().toISOString() // 使用標準 ISO 格式儲存
+                timestamp: new Date().toISOString()
             };
 
             document.querySelector('.btn-submit').innerText = '儲存中...';
@@ -457,7 +455,7 @@
             }
         }
 
-        // 圖片轉 Base64 輔助函式
+        function toolBase64(file) { return toBase64(file); }
         function toBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -467,7 +465,6 @@
             });
         }
 
-        // 初始化載入點數
         fetchPoints();
     </script>
 </body>
