@@ -120,7 +120,6 @@
             color: #555;
             font-weight: 500;
         }
-        /* 底部切換按鈕樣式 */
         .nav-btn {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -138,7 +137,6 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        /* 歷史紀錄頁面樣式 */
         #history-page {
             display: none;
         }
@@ -207,7 +205,6 @@
             font-weight: bold;
         }
 
-        /* 新增紀錄彈出表單 */
         #modal {
             display: none;
             position: fixed;
@@ -361,6 +358,21 @@
             document.getElementById('main-page').style.display = 'block';
         }
 
+        // 格式化時間工具函式 (將 ISO 或一般時間轉為 YYYY-MM-DD HH:mm)
+        function formatTimestamp(isoString) {
+            if (!isoString) return '';
+            const date = new Date(isoString);
+            if (isNaN(date.getTime())) {
+                return isoString; // 如果原本就不是日期格式則直接回傳
+            }
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const hh = String(date.getHours()).padStart(2, '0');
+            const min = String(date.getMinutes()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+        }
+
         // 取得歷史紀錄
         async function fetchHistory() {
             const gallery = document.getElementById('gallery');
@@ -377,12 +389,13 @@
                 
                 gallery.innerHTML = '';
                 list.forEach(item => {
+                    const formattedDate = formatTimestamp(item.timestamp);
                     const card = document.createElement('div');
                     card.className = 'tx-card';
                     card.innerHTML = `
                         <img src="${item.image || 'https://via.placeholder.com/150?text=No+Image'}" class="tx-img" onerror="this.src='https://via.placeholder.com/150?text=Image+Error'">
                         <div class="tx-info">
-                            <div class="tx-date">${item.timestamp}</div>
+                            <div class="tx-date">${formattedDate}</div>
                             <div class="tx-name" title="${item.title}">${item.title}</div>
                             <div class="tx-price">-$${item.price}</div>
                         </div>
@@ -413,7 +426,7 @@
             let imageUrl = '';
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
-                imageUrl = await toBase64(file); // 將圖片轉為 Base64 暫存
+                imageUrl = await toBase64(file);
             }
 
             const payload = {
@@ -421,7 +434,7 @@
                 title: title,
                 price: price,
                 image: imageUrl,
-                timestamp: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                timestamp: new Date().toISOString() // 使用標準 ISO 格式儲存
             };
 
             document.querySelector('.btn-submit').innerText = '儲存中...';
@@ -435,7 +448,7 @@
                 document.getElementById('tx-title').value = '';
                 document.getElementById('tx-price').value = '';
                 document.getElementById('tx-file').value = '';
-                fetchHistory(); // 重新整理圖庫
+                fetchHistory();
             } catch (error) {
                 console.error(error);
                 alert('儲存失敗，請稍後再試');
