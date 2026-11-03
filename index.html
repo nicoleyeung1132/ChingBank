@@ -17,7 +17,7 @@
         .card-container {
             background: linear-gradient(135deg, #1e3a8a 0%, #2A4B83 100%);
             width: 100%;
-            max-width: 400px; /* 維持原本的大小 */
+            max-width: 400px;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             color: white;
@@ -61,7 +61,6 @@
             font-weight: bold;
             color: #ffffff;
         }
-        /* 重新整理按鈕保持在點數下方 */
         .refresh-hint {
             font-size: 0.7rem;
             color: #93c5fd;
@@ -74,10 +73,9 @@
             color: #ffffff;
             text-decoration: underline;
         }
-        /* 單獨將卡片圖放大（這裡設定寬度放大至 112%，並透過負邊距修正置中與間距） */
         .credit-card-art {
             width: 112%;
-            margin-left: -6%; /* 讓放大後的圖片左右切齊容器 */
+            margin-left: -6%;
             border-radius: 12px;
             margin-bottom: 20px;
             display: block;
@@ -85,7 +83,7 @@
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             padding: 0 4px;
         }
         .info-label {
@@ -98,9 +96,9 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-        /* QR Code 區塊維持原本大小與置中白底 */
         .qr-container {
             text-align: center;
+            margin-bottom: 20px;
         }
         .qr-section {
             display: inline-block;
@@ -122,67 +120,225 @@
             color: #555;
             font-weight: 500;
         }
+        /* 底部切換按鈕樣式 */
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* 歷史紀錄頁面樣式 */
+        #history-page {
+            display: none;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .history-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .add-tx-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .grid-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .tx-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .tx-img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+        .tx-info {
+            padding: 8px;
+            font-size: 0.8rem;
+        }
+        .tx-date {
+            color: #666;
+            font-size: 0.7rem;
+            margin-bottom: 2px;
+        }
+        .tx-name {
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tx-price {
+            color: #e11d48;
+            font-weight: bold;
+        }
+
+        /* 新增紀錄彈出表單 */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 16px;
+            width: 85%;
+            max-width: 320px;
+        }
+        .modal-content h3 { margin-top: 0; font-size: 1.1rem; }
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .modal-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .modal-btns button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .btn-cancel { background: #cbd5e1; }
+        .btn-submit { background: #2563eb; color: white; }
     </style>
 </head>
 <body>
 
     <div class="card-container">
-        <!-- 頂部標題與即時點數 -->
-        <div class="header">
-            <div class="header-left">
-                <!-- 頭貼圖片 -->
-                <img src="去背標籤圖.png" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/45'">
-                <div class="title-group">
-                    <h1>大人專屬魔法小卡</h1>
+        <!-- 頁面一：魔法小卡首頁 -->
+        <div id="main-page">
+            <div class="header">
+                <div class="header-left">
+                    <img src="去背標籤圖.png" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/45'">
+                    <div class="title-group">
+                        <h1>大人專屬魔法小卡</h1>
+                    </div>
+                </div>
+                <div class="points-box">
+                    <div class="points-label">剩餘點數</div>
+                    <div id="points" class="points-value">載入中...</div>
+                    <div class="refresh-hint" onclick="fetchPoints()">🔄 重新整理點數</div>
                 </div>
             </div>
-            <div class="points-box">
-                <div class="points-label">剩餘點數</div>
-                <div id="points" class="points-value">載入中...</div>
-                <!-- 重新整理按鈕放置於點數下方 -->
-                <div class="refresh-hint" onclick="fetchPoints()">🔄 重新整理點數</div>
+
+            <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
+
+            <div class="info-row">
+                <div>
+                    <div class="info-label">使用期限</div>
+                    <div class="info-value">2027/11/22</div>
+                </div>
+                <div style="text-align: right;">
+                    <div class="info-label">銀行代碼</div>
+                    <div class="info-value">Ching</div>
+                </div>
             </div>
+
+            <div class="qr-container">
+                <div class="qr-section">
+                    <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-image" onerror="this.src='https://via.placeholder.com/160?text=QR+Code'">
+                    <div class="qr-date">20261031</div>
+                </div>
+            </div>
+
+            <button class="nav-btn" onclick="showHistoryPage()">📜 查看歷史交易紀錄</button>
         </div>
 
-        <!-- 魔法小卡卡面圖片 (已單獨放大) -->
-        <img src="卡片正面_DPIfix.png" alt="Credit Card" class="credit-card-art" onerror="this.style.display='none'">
-
-        <!-- 使用期限與銀行代碼 -->
-        <div class="info-row">
-            <div>
-                <div class="info-label">使用期限</div>
-                <div class="info-value">2027/11/22</div>
+        <!-- 頁面二：歷史交易紀錄牆 -->
+        <div id="history-page">
+            <div class="history-header">
+                <h2 class="history-title">📜 歷史交易紀錄</h2>
+                <button class="add-tx-btn" onclick="openModal()">+ 記一筆</button>
             </div>
-            <div style="text-align: right;">
-                <div class="info-label">銀行代碼</div>
-                <div class="info-value">Ching</div>
+
+            <div id="gallery" class="grid-gallery">
+                <div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入紀錄中...</div>
+            </div>
+
+            <div style="margin-top: 16px;">
+                <button class="nav-btn" onclick="showMainPage()">🔙 返回魔法小卡</button>
             </div>
         </div>
+    </div>
 
-        <!-- QR Code 區塊 (白底剛好包覆) -->
-        <div class="qr-container">
-            <div class="qr-section">
-                <img src="Birthday Wish-MV.png" alt="QR Code" class="qr-image" onerror="this.src='https://via.placeholder.com/160?text=QR+Code'">
-                <div class="qr-date">20261031</div>
+    <!-- 新增交易紀錄彈跳視窗 -->
+    <div id="modal">
+        <div class="modal-content">
+            <h3>新增交易紀錄</h3>
+            <label style="font-size:0.8rem;">品項名稱：</label>
+            <input type="text" id="tx-title" placeholder="例如：星巴克咖啡">
+            
+            <label style="font-size:0.8rem;">價格 / 點數：</label>
+            <input type="number" id="tx-price" placeholder="例如：150">
+            
+            <label style="font-size:0.8rem;">照片 (拍照或上傳)：</label>
+            <input type="file" id="tx-file" accept="image/*">
+            
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeModal()">取消</button>
+                <button class="btn-submit" onclick="submitTransaction()">送出</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 你的 Google Apps Script 網址
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbyHvdcxDuUgI5TMR5pJp2uYmxkOmWCH0ftkgFY_trWiEj0jOMii2UphTuMjEd-GPhvK/exec';
 
+        // 取得點數
         async function fetchPoints() {
             const pointsEl = document.getElementById('points');
             pointsEl.innerText = "載入中...";
-            
             try {
-                // 加上時間戳記避免瀏覽器快取
                 const response = await fetch(`${scriptUrl}?t=${Date.now()}`);
                 const data = await response.json();
-                
                 if (typeof data.points !== 'undefined') {
-                    // 自動加上千分位逗號（例如 2500 變成 2,500）
                     pointsEl.innerText = Number(data.points).toLocaleString();
                 } else {
                     pointsEl.innerText = "---";
@@ -193,9 +349,113 @@
             }
         }
 
-        // 網頁開啟時自動抓取最新點數
+        // 切換頁面
+        function showHistoryPage() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('history-page').style.display = 'block';
+            fetchHistory();
+        }
+
+        function showMainPage() {
+            document.getElementById('history-page').style.display = 'none';
+            document.getElementById('main-page').style.display = 'block';
+        }
+
+        // 取得歷史紀錄
+        async function fetchHistory() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">載入紀錄中...</div>';
+            
+            try {
+                const response = await fetch(`${scriptUrl}?action=history&t=${Date.now()}`);
+                const list = await response.json();
+                
+                if (list.length === 0) {
+                    gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #93c5fd; padding: 40px;">目前尚無交易紀錄</div>';
+                    return;
+                }
+                
+                gallery.innerHTML = '';
+                list.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'tx-card';
+                    card.innerHTML = `
+                        <img src="${item.image || 'https://via.placeholder.com/150?text=No+Image'}" class="tx-img" onerror="this.src='https://via.placeholder.com/150?text=Image+Error'">
+                        <div class="tx-info">
+                            <div class="tx-date">${item.timestamp}</div>
+                            <div class="tx-name" title="${item.title}">${item.title}</div>
+                            <div class="tx-price">-$${item.price}</div>
+                        </div>
+                    `;
+                    gallery.appendChild(card);
+                });
+            } catch (error) {
+                console.error(error);
+                gallery.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #f87171; padding: 40px;">載入失敗</div>';
+            }
+        }
+
+        // 彈跳視窗控制
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+        // 送出新交易紀錄
+        async function submitTransaction() {
+            const title = document.getElementById('tx-title').value;
+            const price = document.getElementById('tx-price').value;
+            const fileInput = document.getElementById('tx-file');
+            
+            if (!title || !price) {
+                alert('請填寫品項名稱與價格！');
+                return;
+            }
+
+            let imageUrl = '';
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                imageUrl = await toBase64(file); // 將圖片轉為 Base64 暫存
+            }
+
+            const payload = {
+                action: 'add_history',
+                title: title,
+                price: price,
+                image: imageUrl,
+                timestamp: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            document.querySelector('.btn-submit').innerText = '儲存中...';
+
+            try {
+                await fetch(scriptUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                closeModal();
+                document.getElementById('tx-title').value = '';
+                document.getElementById('tx-price').value = '';
+                document.getElementById('tx-file').value = '';
+                fetchHistory(); // 重新整理圖庫
+            } catch (error) {
+                console.error(error);
+                alert('儲存失敗，請稍後再試');
+            } finally {
+                document.querySelector('.btn-submit').innerText = '送出';
+            }
+        }
+
+        // 圖片轉 Base64 輔助函式
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // 初始化載入點數
         fetchPoints();
     </script>
-
 </body>
 </html>
